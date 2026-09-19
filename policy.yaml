@@ -1,0 +1,20 @@
+# Safety policy for the automation system.
+# Filled in properly during Phase 2.
+
+allowed_origins:
+  - "http://localhost:5001"
+
+allowed_path_patterns:
+  - "^/login$"
+  - "^/search$"
+  - "^/member/\\d+$"
+  - "^/member/\\d+/sub-account$"
+  - "^/member/\\d+/sub-account/confirm$"
+
+action_risk:
+  navigate: safe
+  click: safe
+  type: safe
+  submit_search: safe
+  submit_sub_account: requires_approval
+  confirm_irreversible: requires_approval

@@ -1,0 +1,21 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Environment / secrets
+.env
+
+# Playwright
+playwright-report/
+
+# OS
+.DS_Store
+
+# Evidence can get large; keep a curated subset committed manually
+evidence/tmp/
+
+# Editor
+.vscode/
+.idea/

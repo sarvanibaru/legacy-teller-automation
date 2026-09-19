@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: legacy-teller-automation
+Version: 0.1.0
+Summary: Computer-use automation system: LLM discovery + deterministic replay for legacy bank UIs
+Requires-Python: >=3.9
+Requires-Dist: playwright>=1.45
+Requires-Dist: flask>=3.0
+Requires-Dist: pydantic>=2.7
+Requires-Dist: anthropic>=0.34
+Requires-Dist: python-dotenv>=1.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.23; extra == "dev"
