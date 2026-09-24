@@ -1,16 +1,31 @@
 # Safety policy for the automation system.
-# Filled in properly during Phase 2.
 
 allowed_origins:
   - "http://localhost:5001"
 
+# Paths the agent may navigate to or act on at all. Anything not matching
+# one of these is refused before any other check runs -- this is the
+# outermost layer.
 allowed_path_patterns:
   - "^/login$"
   - "^/search$"
   - "^/member/\\d+$"
   - "^/member/\\d+/sub-account$"
   - "^/member/\\d+/sub-account/confirm$"
+  - "^/member/\\d+/sub-account/submit$"
 
+# Paths that are explicitly forbidden, even though they may look like
+# they'd match the shape of an allowed path. Checked before the allowlist,
+# so a mistake in allowed_path_patterns can't accidentally let one through.
+# This is a second, independent layer -- not just "absence from the
+# allowlist above" -- so the block is a deliberate, visible decision rather
+# than an accident of omission.
+blocked_path_patterns:
+  - "^/member/\\d+/close$"
+
+# Risk classification for generic action *types* the agent can perform.
+# This governs the default handling of a verb (click, type, navigate) when
+# no more specific target-level override applies.
 action_risk:
   navigate: safe
   click: safe
@@ -18,3 +33,11 @@ action_risk:
   submit_search: safe
   submit_sub_account: requires_approval
   confirm_irreversible: requires_approval
+
+# Target-level overrides: some specific controls carry a different risk
+# than their generic action type would suggest. A "click" is normally
+# safe, but a click that resolves to a blocked path is not -- this list
+# lets the policy layer catch that regardless of which verb triggered it.
+target_overrides:
+  - path_pattern: "^/member/\\d+/close$"
+    risk: blocked

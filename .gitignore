@@ -19,3 +19,4 @@ evidence/tmp/
 # Editor
 .vscode/
 .idea/
+*.egg-info/
