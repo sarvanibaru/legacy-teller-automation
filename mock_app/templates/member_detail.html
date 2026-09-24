@@ -1,0 +1,50 @@
+<html>
+<head><title>CoreTeller System - Member Detail</title></head>
+<body bgcolor="#d6d6d6">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td>
+      <table width="500" align="center" cellpadding="8" cellspacing="0" border="1" bgcolor="#ffffff">
+        <tr>
+          <td>
+            <font face="Tahoma" size="4"><b>Member Detail</b></font>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table cellpadding="4" cellspacing="0" border="0">
+              <tr>
+                <td><b>Member ID:</b></td>
+                <td>{{ member.member_id }}</td>
+              </tr>
+              <tr>
+                <td><b>Name:</b></td>
+                <td>{{ member.name }}</td>
+              </tr>
+            </table>
+            <br>
+            <table cellpadding="4" cellspacing="1" border="1" bgcolor="#eeeeee">
+              <tr>
+                <th scope="row" align="left">Savings Balance</th>
+                <td align="right">${{ "%.2f"|format(member.savings_balance) }}</td>
+              </tr>
+              <tr>
+                <th scope="row" align="left">Checking Balance</th>
+                <td align="right">${{ "%.2f"|format(member.checking_balance) }}</td>
+              </tr>
+            </table>
+            <br>
+            <form method="GET" action="/member/{{ member.member_id }}/sub-account">
+              <input type="submit" value="Open New Sub-Account">
+            </form>
+            <br>
+            <a href="/member/{{ member.member_id }}/close" style="color:darkred;">Close Account</a>
+            <font size="1" color="gray"><br>(Requires supervisor authorization)</font>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

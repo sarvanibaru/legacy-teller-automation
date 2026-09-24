@@ -1,0 +1,35 @@
+<html>
+<head><title>CoreTeller System - Confirm Sub-Account</title></head>
+<body bgcolor="#d6d6d6">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td>
+      <table width="500" align="center" cellpadding="8" cellspacing="0" border="1" bgcolor="#ffffff">
+        <tr>
+          <td>
+            <font face="Tahoma" size="4"><b>Confirm Sub-Account Details</b></font>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table cellpadding="4" cellspacing="0" border="0">
+              <tr><td><b>Member:</b></td><td>{{ member.name }} ({{ member.member_id }})</td></tr>
+              <tr><td><b>Account Type:</b></td><td>{{ account_type }}</td></tr>
+              <tr><td><b>Initial Deposit:</b></td><td>${{ initial_deposit }}</td></tr>
+            </table>
+            <br>
+            <font color="red">This action cannot be undone.</font><br><br>
+            <form method="POST" action="/member/{{ member.member_id }}/sub-account/submit"
+                  {% if inject_dialog %}onsubmit="return confirm('Are you absolutely sure you want to open this account? This cannot be reversed.');"{% endif %}>
+              <input type="hidden" name="account_type" value="{{ account_type }}">
+              <input type="hidden" name="initial_deposit" value="{{ initial_deposit }}">
+              <input type="submit" value="Confirm and Open Account">
+            </form>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

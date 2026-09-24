@@ -1,0 +1,30 @@
+<html>
+<head><title>CoreTeller System - Sub-Account Created</title></head>
+<body bgcolor="#d6d6d6">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td>
+      <table width="500" align="center" cellpadding="8" cellspacing="0" border="1" bgcolor="#ffffff">
+        <tr>
+          <td>
+            <font face="Tahoma" size="4" color="green"><b>Sub-Account Created Successfully</b></font>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table cellpadding="4" cellspacing="0" border="0">
+              <tr><th scope="row" align="left">Reference Number</th><td>{{ reference_number }}</td></tr>
+              <tr><th scope="row" align="left">Member</th><td>{{ member.name }} ({{ member.member_id }})</td></tr>
+              <tr><th scope="row" align="left">Account Type</th><td>{{ account_type }}</td></tr>
+              <tr><th scope="row" align="left">Initial Deposit</th><td>${{ initial_deposit }}</td></tr>
+            </table>
+            <br>
+            <a href="/member/{{ member.member_id }}">Return to Member Detail</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

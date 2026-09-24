@@ -1,0 +1,48 @@
+<html>
+<head><title>CoreTeller System - Open Sub-Account</title></head>
+<body bgcolor="#d6d6d6">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td>
+      <table width="500" align="center" cellpadding="8" cellspacing="0" border="1" bgcolor="#ffffff">
+        <tr>
+          <td>
+            <font face="Tahoma" size="4"><b>Open New Sub-Account</b></font><br>
+            <font face="Tahoma" size="2">For member: {{ member.name }} ({{ member.member_id }})</font>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {% if validation_error %}
+            <font color="red">{{ validation_error }}</font><br><br>
+            {% endif %}
+            <form method="POST" action="/member/{{ member.member_id }}/sub-account/confirm{% if inject %}?inject={{ inject }}{% endif %}">
+              <table cellpadding="4" cellspacing="0" border="0">
+                <tr>
+                  <td><label for="atype">Account Type</label></td>
+                  <td>
+                    <select id="atype" name="account_type">
+                      <option value="savings">Savings</option>
+                      <option value="christmas_club">Christmas Club</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label for="deposit">Initial Deposit ($)</label></td>
+                  <td><input type="text" id="deposit" name="initial_deposit" value="25.00"></td>
+                </tr>
+                <tr>
+                  <td colspan="2" align="right">
+                    <input type="submit" value="Continue">
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
