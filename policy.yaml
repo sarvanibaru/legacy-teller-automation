@@ -30,6 +30,7 @@ action_risk:
   navigate: safe
   click: safe
   type: safe
+  read_text: safe
   submit_search: safe
   submit_sub_account: requires_approval
   confirm_irreversible: requires_approval
@@ -41,3 +42,4 @@ action_risk:
 target_overrides:
   - path_pattern: "^/member/\\d+/close$"
     risk: blocked
+
