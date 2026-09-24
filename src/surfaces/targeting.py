@@ -16,38 +16,48 @@ Strategies are deliberately ordered from most portable to least:
                    mock app's balance display uses.
   3. TextExact  -- last resort: find something by its visible text. Least
                    robust (breaks if copy changes) but always available.
+
+These are Pydantic models, not plain dataclasses, so a TargetDescriptor
+can be serialized straight into a saved artifact and read back without a
+separate storage representation -- the same object the live agent
+resolves against is the one persisted. The "kind" field on each locator
+is a discriminator: it's what lets Pydantic figure out, when reading JSON
+back, which concrete locator type a given entry in the list actually is.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Union
+from typing import Annotated, List, Literal, Union
+
+from pydantic import BaseModel, Field
 
 
-@dataclass
-class RoleNameLocator:
+class RoleNameLocator(BaseModel):
+    kind: Literal["role_name"] = "role_name"
     role: str    # e.g. "textbox", "button", "link"
     name: str    # the accessible name, e.g. "Member ID"
 
 
-@dataclass
-class RowLabelLocator:
+class RowLabelLocator(BaseModel):
     """Finds the value cell in a row whose row-header text matches
     row_label. Matches the <th scope="row">Savings Balance</th> pattern
     used on the member detail page."""
+    kind: Literal["row_label"] = "row_label"
     row_label: str
 
 
-@dataclass
-class TextExactLocator:
+class TextExactLocator(BaseModel):
+    kind: Literal["text_exact"] = "text_exact"
     text: str
 
 
-Locator = Union[RoleNameLocator, RowLabelLocator, TextExactLocator]
+Locator = Annotated[
+    Union[RoleNameLocator, RowLabelLocator, TextExactLocator],
+    Field(discriminator="kind"),
+]
 
 
-@dataclass
-class TargetDescriptor:
-    strategies: list[Locator]
+class TargetDescriptor(BaseModel):
+    strategies: List[Locator]
 
     @classmethod
     def by_role(cls, role: str, name: str) -> "TargetDescriptor":

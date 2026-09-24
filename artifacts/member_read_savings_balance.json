@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "capability_id": "member.read_savings_balance",
+  "version": 1,
+  "description": "Look up a member by ID and read their current savings balance.",
+  "app_profile": {
+    "vendor": "MockBank",
+    "product": "CoreTeller",
+    "version": "1.0-mock"
+  },
+  "approval_state": "draft",
+  "inputs": [
+    {
+      "name": "memberId",
+      "type": "string",
+      "description": "The member ID to search for.",
+      "pattern": "^\\d+$",
+      "sensitive": false
+    }
+  ],
+  "outputs": [
+    {
+      "name": "savingsBalance",
+      "type": "number",
+      "description": "The member's current savings balance.",
+      "extract_from_step": "s4",
+      "parse": "currency"
+    }
+  ],
+  "steps": [
+    {
+      "id": "s1",
+      "action": "navigate",
+      "target": null,
+      "value": {
+        "kind": "literal",
+        "value": "/search"
+      },
+      "postcondition": {
+        "kind": "element_visible",
+        "target": {
+          "strategies": [
+            {
+              "kind": "role_name",
+              "role": "textbox",
+              "name": "Member ID"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "s2",
+      "action": "type",
+      "target": {
+        "strategies": [
+          {
+            "kind": "role_name",
+            "role": "textbox",
+            "name": "Member ID"
+          }
+        ]
+      },
+      "value": {
+        "kind": "param",
+        "param": "memberId"
+      },
+      "postcondition": null
+    },
+    {
+      "id": "s3",
+      "action": "click",
+      "target": {
+        "strategies": [
+          {
+            "kind": "role_name",
+            "role": "button",
+            "name": "Search"
+          }
+        ]
+      },
+      "value": null,
+      "postcondition": null
+    },
+    {
+      "id": "s4",
+      "action": "read_text",
+      "target": {
+        "strategies": [
+          {
+            "kind": "row_label",
+            "row_label": "Savings Balance"
+          }
+        ]
+      },
+      "value": null,
+      "postcondition": null
+    }
+  ],
+  "outcomes": [
+    {
+      "code": "MEMBER_NOT_FOUND",
+      "detector": {
+        "kind": "text_present",
+        "pattern": "No member matching"
+      },
+      "terminal": true,
+      "success": false,
+      "description": "No member exists with the given ID."
+    }
+  ],
+  "recoveries": [],
+  "checkpoint": {
+    "kind": "element_visible",
+    "target": {
+      "strategies": [
+        {
+          "kind": "row_label",
+          "row_label": "Savings Balance"
+        }
+      ]
+    }
+  }
+}
