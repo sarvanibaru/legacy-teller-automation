@@ -96,9 +96,22 @@ class WebSurface(Surface):
         text = locator.inner_text()
         return ActResult(success=True, resolved_via=strategy_name, extracted_text=text)
 
+    def element_visible(self, target: TargetDescriptor, timeout_ms: int = 1000) -> bool:
+        """No policy check here -- this only asks a question, it doesn't
+        act. A short default timeout: this is typically used to
+        distinguish between two already-anticipated states (checkpoint
+        met vs. not, a declared outcome present vs. not), so waiting out
+        a long default timeout on the "not present" branch would make
+        every replay slow for no benefit."""
+        try:
+            self._resolve(target, timeout_ms=timeout_ms)
+            return True
+        except Exception:
+            return False
+
     # ---------- targeting ----------
 
-    def _resolve(self, target: TargetDescriptor):
+    def _resolve(self, target: TargetDescriptor, timeout_ms: int = 3000):
         """Tries each strategy in order, returns the first that resolves
         to a visible element, along with which strategy it was. That
         second piece is what makes drift observable later -- if replay
@@ -111,7 +124,7 @@ class WebSurface(Surface):
         for strategy in target.strategies:
             try:
                 locator = self._locator_for_strategy(strategy)
-                locator.wait_for(state="visible", timeout=3000)
+                locator.wait_for(state="visible", timeout=timeout_ms)
                 return locator, type(strategy).__name__
             except Exception as e:
                 last_error = e

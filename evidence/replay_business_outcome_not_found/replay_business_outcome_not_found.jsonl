@@ -1,0 +1,8 @@
+{"timestamp": "2026-09-29T01:37:23.663521+00:00", "run_id": "replay_business_outcome_not_found", "event_type": "replay_started", "capability_id": "member.read_savings_balance", "capability_version": 1}
+{"timestamp": "2026-09-29T01:37:23.663802+00:00", "run_id": "replay_business_outcome_not_found", "event_type": "step_started", "step_id": "s1", "action": "navigate"}
+{"timestamp": "2026-09-29T01:37:23.671734+00:00", "run_id": "replay_business_outcome_not_found", "event_type": "step_completed", "step_id": "s1", "success": true, "resolved_via": "navigate", "error": null}
+{"timestamp": "2026-09-29T01:37:23.719670+00:00", "run_id": "replay_business_outcome_not_found", "event_type": "step_started", "step_id": "s2", "action": "type"}
+{"timestamp": "2026-09-29T01:37:23.727965+00:00", "run_id": "replay_business_outcome_not_found", "event_type": "step_completed", "step_id": "s2", "success": true, "resolved_via": "RoleNameLocator", "error": null}
+{"timestamp": "2026-09-29T01:37:23.766061+00:00", "run_id": "replay_business_outcome_not_found", "event_type": "step_started", "step_id": "s3", "action": "click"}
+{"timestamp": "2026-09-29T01:37:23.809885+00:00", "run_id": "replay_business_outcome_not_found", "event_type": "step_completed", "step_id": "s3", "success": true, "resolved_via": "RoleNameLocator", "error": null}
+{"timestamp": "2026-09-29T01:37:23.850134+00:00", "run_id": "replay_business_outcome_not_found", "event_type": "outcome_detected", "code": "MEMBER_NOT_FOUND", "step_id": "s3"}

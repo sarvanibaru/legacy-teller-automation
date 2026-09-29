@@ -43,3 +43,6 @@ class DesktopSurface(Surface):
 
     def act(self, action: Action) -> ActResult:
         raise NotImplementedError
+
+    def element_visible(self, target) -> bool:
+        raise NotImplementedError

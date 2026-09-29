@@ -49,3 +49,13 @@ class Surface(ABC):
     def act(self, action: Action) -> ActResult:
         """Perform one action. Must enforce policy internally before
         acting -- callers should never need to check policy separately."""
+
+    @abstractmethod
+    def element_visible(self, target: Any) -> bool:
+        """Check whether a target currently resolves to a visible element,
+        without acting on it. Used by checkpoint and outcome evaluation --
+        those need to *ask* whether something is present, not click or
+        type into it. Should use a short timeout: this is commonly called
+        specifically to distinguish between two already-anticipated
+        states (e.g. "did the balance row appear, or the not-found
+        message?"), not to wait out a slow load."""
