@@ -18,6 +18,7 @@ from src.safety.policy import PolicyEngine
 from src.surfaces.base import Action
 from src.surfaces.targeting import TargetDescriptor
 from src.surfaces.web_surface import WebSurface
+from data import VALID_PASSWORD, VALID_USERNAME 
 
 TEST_PORT = 5099
 BASE_URL = f"http://localhost:{TEST_PORT}"
@@ -57,12 +58,12 @@ def _login(surface):
     surface.act(Action(
         type="type",
         target=TargetDescriptor.by_role("textbox", "Username"),
-        value="user1",
+        value=VALID_USERNAME,
     ))
     surface.act(Action(
         type="type",
         target=TargetDescriptor.by_role("textbox", "Password"),
-        value="password123",
+        value=VALID_PASSWORD,
     ))
     surface.act(Action(type="click", target=TargetDescriptor.by_role("button", "Log In")))
 

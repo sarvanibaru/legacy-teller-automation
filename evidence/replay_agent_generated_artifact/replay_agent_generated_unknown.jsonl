@@ -1,0 +1,9 @@
+{"timestamp": "2026-10-02T02:39:43.285053+00:00", "run_id": "replay_agent_generated_unknown", "event_type": "replay_started", "capability_id": "member.read_savings_balance.agent_generated", "capability_version": 1}
+{"timestamp": "2026-10-02T02:39:43.285178+00:00", "run_id": "replay_agent_generated_unknown", "event_type": "step_started", "step_id": "s1", "action": "navigate"}
+{"timestamp": "2026-10-02T02:39:43.296047+00:00", "run_id": "replay_agent_generated_unknown", "event_type": "step_completed", "step_id": "s1", "success": true, "resolved_via": "navigate", "error": null}
+{"timestamp": "2026-10-02T02:39:43.344645+00:00", "run_id": "replay_agent_generated_unknown", "event_type": "step_started", "step_id": "s2", "action": "type"}
+{"timestamp": "2026-10-02T02:39:43.357495+00:00", "run_id": "replay_agent_generated_unknown", "event_type": "step_completed", "step_id": "s2", "success": true, "resolved_via": "RoleNameLocator", "error": null}
+{"timestamp": "2026-10-02T02:39:43.377134+00:00", "run_id": "replay_agent_generated_unknown", "event_type": "step_started", "step_id": "s3", "action": "click"}
+{"timestamp": "2026-10-02T02:39:43.437724+00:00", "run_id": "replay_agent_generated_unknown", "event_type": "step_completed", "step_id": "s3", "success": true, "resolved_via": "RoleNameLocator", "error": null}
+{"timestamp": "2026-10-02T02:39:43.477126+00:00", "run_id": "replay_agent_generated_unknown", "event_type": "step_started", "step_id": "s4", "action": "read_text"}
+{"timestamp": "2026-10-02T02:39:46.480654+00:00", "run_id": "replay_agent_generated_unknown", "event_type": "step_completed", "step_id": "s4", "success": false, "resolved_via": null, "error": "RuntimeError: No strategy resolved this target. Last error: Locator.wait_for: Timeout 3000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"rowheader\", name=\"Savings Balance\", exact=True).locator(\"..\").get_by_role(\"cell\") to be visible\n"}

@@ -22,6 +22,12 @@ from src.surfaces.base import Action
 from src.surfaces.targeting import TargetDescriptor
 from src.surfaces.web_surface import WebSurface
 
+# Import the mock app's own credential constants rather than retyping them
+# here -- mock_app/data.py is the single source of truth, so a credential
+# change there can never silently drift out of sync with this script
+sys.path.insert(0, str(Path(__file__).parent.parent / "mock_app"))
+from data import VALID_USERNAME, VALID_PASSWORD 
+
 BASE_URL = "http://localhost:5001"
 
 
@@ -30,12 +36,12 @@ def login(surface):
     surface.act(Action(
         type="type",
         target=TargetDescriptor.by_role("textbox", "Username"),
-        value="user1",
+        value=VALID_USERNAME,
     ))
     surface.act(Action(
         type="type",
         target=TargetDescriptor.by_role("textbox", "Password"),
-        value="password123",
+        value=VALID_PASSWORD,
     ))
     surface.act(Action(type="click", target=TargetDescriptor.by_role("button", "Log In")))
 

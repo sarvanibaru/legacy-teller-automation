@@ -1,0 +1,10 @@
+{"timestamp": "2026-10-02T02:39:43.026446+00:00", "run_id": "replay_agent_generated_valid", "event_type": "replay_started", "capability_id": "member.read_savings_balance.agent_generated", "capability_version": 1}
+{"timestamp": "2026-10-02T02:39:43.027052+00:00", "run_id": "replay_agent_generated_valid", "event_type": "step_started", "step_id": "s1", "action": "navigate"}
+{"timestamp": "2026-10-02T02:39:43.035164+00:00", "run_id": "replay_agent_generated_valid", "event_type": "step_completed", "step_id": "s1", "success": true, "resolved_via": "navigate", "error": null}
+{"timestamp": "2026-10-02T02:39:43.081794+00:00", "run_id": "replay_agent_generated_valid", "event_type": "step_started", "step_id": "s2", "action": "type"}
+{"timestamp": "2026-10-02T02:39:43.092089+00:00", "run_id": "replay_agent_generated_valid", "event_type": "step_completed", "step_id": "s2", "success": true, "resolved_via": "RoleNameLocator", "error": null}
+{"timestamp": "2026-10-02T02:39:43.110599+00:00", "run_id": "replay_agent_generated_valid", "event_type": "step_started", "step_id": "s3", "action": "click"}
+{"timestamp": "2026-10-02T02:39:43.175437+00:00", "run_id": "replay_agent_generated_valid", "event_type": "step_completed", "step_id": "s3", "success": true, "resolved_via": "RoleNameLocator", "error": null}
+{"timestamp": "2026-10-02T02:39:43.212332+00:00", "run_id": "replay_agent_generated_valid", "event_type": "step_started", "step_id": "s4", "action": "read_text"}
+{"timestamp": "2026-10-02T02:39:43.222497+00:00", "run_id": "replay_agent_generated_valid", "event_type": "step_completed", "step_id": "s4", "success": true, "resolved_via": "RowLabelLocator", "error": null}
+{"timestamp": "2026-10-02T02:39:43.284613+00:00", "run_id": "replay_agent_generated_valid", "event_type": "replay_succeeded", "capability_id": "member.read_savings_balance.agent_generated", "outputs": {"savingsBalance": 4210.55}}
