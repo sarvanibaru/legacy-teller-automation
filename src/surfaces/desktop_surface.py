@@ -46,3 +46,6 @@ class DesktopSurface(Surface):
 
     def element_visible(self, target) -> bool:
         raise NotImplementedError
+
+    def current_url(self) -> str:
+        raise NotImplementedError

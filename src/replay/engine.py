@@ -28,10 +28,16 @@ class InputValidationError(Exception):
 
 
 class ReplayEngine:
-    def __init__(self, surface: Surface, base_url: str, evidence_logger: EvidenceLogger):
+    def __init__(self, surface: Surface, base_url: str, evidence_logger: EvidenceLogger, escalation=None):
         self.surface = surface
         self.base_url = base_url
         self.logger = evidence_logger
+        self.escalation = escalation
+        """Optional EscalationManager. When provided, a step that fails
+        pauses for a human to take over the live session and fix
+        whatever blocked it, then retries that same step once before
+        giving up -- matching "a replay hits a condition it can't
+        recover from" from the brief, rather than failing immediately."""
 
     def replay(self, capability: Capability, inputs: dict, allow_draft: bool = False) -> ReplayResult:
         if capability.approval_state != "approved" and not allow_draft:
@@ -67,7 +73,7 @@ class ReplayEngine:
                 action = self._step_to_action(step, inputs)
                 self.logger.log("step_started", step_id=step.id, action=step.action)
 
-                result = self.surface.act(action)
+                result = self._act_with_escalation(action, step, capability)
 
                 self.logger.log(
                     "step_completed",
@@ -133,6 +139,33 @@ class ReplayEngine:
                 status="failed",
                 error=f"Unexpected error during replay: {type(e).__name__}: {e}",
             )
+
+    def _act_with_escalation(self, action: Action, step: Step, capability: Capability):
+        result = self.surface.act(action)
+        if result.success or self.escalation is None:
+            return result
+
+        observation = self.surface.observe()
+        request = self.escalation.raise_intervention(
+            kind="takeover",
+            reason=f"Step '{step.id}' ('{step.action}') failed: {result.error}",
+            observation=observation,
+            capability_id=capability.capability_id,
+            step_id=step.id,
+        )
+        self.logger.log("escalation_raised", kind="takeover", request_id=request.request_id, step_id=step.id)
+
+        resolution = self.escalation.wait_for_resolution(timeout=None)
+        self.logger.log("escalation_resolved", resolution=resolution, step_id=step.id)
+
+        if resolution is None or not resolution.get("approved"):
+            return result  # the original failure stands
+
+        # A human may have fixed the live state -- give the same action
+        # one more try before accepting it as a hard failure.
+        retried = self.surface.act(action)
+        self.logger.log("step_retried_after_escalation", step_id=step.id, success=retried.success)
+        return retried
 
     def _outcome_result(self, outcome, step_id: str, observation) -> ReplayResult:
         self.logger.log("outcome_detected", code=outcome.code, step_id=step_id)

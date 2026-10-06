@@ -104,12 +104,18 @@ def _observation_hash(observation) -> str:
 
 class DiscoveryAgent:
     def __init__(self, surface: Surface, decision_client, evidence_logger=None,
-                 max_steps: int = 15, stuck_after_repeats: int = 3):
+                 max_steps: int = 15, stuck_after_repeats: int = 3, escalation=None):
         self.surface = surface
         self.decision_client = decision_client
         self.logger = evidence_logger
         self.max_steps = max_steps
         self.stuck_after_repeats = stuck_after_repeats
+        self.escalation = escalation
+        """Optional EscalationManager. When provided, a stuck condition
+        pauses for a human to take over the live session instead of just
+        stopping -- and once they resume, the loop continues rather than
+        ending, since the human may have unblocked whatever the agent
+        couldn't resolve on its own."""
 
     def run(self, goal: str) -> DiscoveryResult:
         system_prompt = SYSTEM_PROMPT_TEMPLATE.format(goal=goal)
@@ -217,7 +223,47 @@ class DiscoveryAgent:
             if repeat_count >= self.stuck_after_repeats:
                 if self.logger:
                     self.logger.log("agent_stuck", step_index=step_index)
-                return DiscoveryResult(status="stuck", goal=goal, steps=steps, starting_url=starting_url)
+
+                if self.escalation is None:
+                    return DiscoveryResult(status="stuck", goal=goal, steps=steps, starting_url=starting_url)
+
+                request = self.escalation.raise_intervention(
+                    kind="takeover",
+                    reason=f"No progress after {repeat_count + 1} identical observations in a row",
+                    observation=observation,
+                    goal=goal,
+                    step_id=f"step_{step_index}",
+                )
+                if self.logger:
+                    self.logger.log("escalation_raised", kind="takeover", request_id=request.request_id)
+
+                resolution = self.escalation.wait_for_resolution(timeout=None)
+                if self.logger:
+                    self.logger.log("escalation_resolved", resolution=resolution)
+
+                if resolution is None or not resolution.get("approved"):
+                    # Human declined to continue, or the wait timed out --
+                    # stop cleanly rather than looping on a known dead end.
+                    return DiscoveryResult(status="stuck", goal=goal, steps=steps, starting_url=starting_url)
+
+                # A human may have changed the page during their turn --
+                # re-observe and fold that into the SAME last message
+                # (appending a new separate user message here would
+                # violate the API's alternating user/assistant structure,
+                # since the previous message was already role="user").
+                fresh_observation = self.surface.observe()
+                messages[-1]["content"].append({
+                    "type": "text",
+                    "text": (
+                        "A human operator just took over and may have changed "
+                        "the page. Continue toward the goal from this current "
+                        f"state.\n\nCurrent page: {fresh_observation.url}\n\n"
+                        f"Accessibility tree:\n{fresh_observation.accessibility_tree}"
+                    ),
+                })
+                observation = fresh_observation
+                last_hash = _observation_hash(fresh_observation)
+                repeat_count = 0
 
         if self.logger:
             self.logger.log("agent_max_steps_exceeded")

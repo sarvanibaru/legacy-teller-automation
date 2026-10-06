@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "capability_id": "member.open_sub_account_confirm_demo",
+  "version": 1,
+  "description": "Open a new sub-account for the current member, accepting form defaults, reaching the irreversible confirm step.",
+  "app_profile": {
+    "vendor": "MockBank",
+    "product": "CoreTeller",
+    "version": "1.0-mock"
+  },
+  "approval_state": "draft",
+  "inputs": [],
+  "outputs": [],
+  "steps": [
+    {
+      "id": "s1",
+      "action": "click",
+      "target": {
+        "strategies": [
+          {
+            "kind": "role_name",
+            "role": "button",
+            "name": "Open New Sub-Account"
+          }
+        ]
+      },
+      "value": null,
+      "postcondition": null
+    },
+    {
+      "id": "s2",
+      "action": "click",
+      "target": {
+        "strategies": [
+          {
+            "kind": "role_name",
+            "role": "button",
+            "name": "Continue"
+          }
+        ]
+      },
+      "value": null,
+      "postcondition": null
+    },
+    {
+      "id": "s3",
+      "action": "click",
+      "target": {
+        "strategies": [
+          {
+            "kind": "role_name",
+            "role": "button",
+            "name": "Confirm and Open Account"
+          }
+        ]
+      },
+      "value": null,
+      "postcondition": null
+    }
+  ],
+  "outcomes": [],
+  "recoveries": [],
+  "checkpoint": {
+    "kind": "text_present",
+    "pattern": "Sub-Account Created Successfully"
+  }
+}

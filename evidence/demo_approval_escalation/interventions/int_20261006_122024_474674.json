@@ -1,0 +1,25 @@
+{
+  "request_id": "int_20261006_122024_474674",
+  "kind": "approval",
+  "reason": "'click' action on 'Confirm and Open Account' requires human approval",
+  "capability_id": "member.open_sub_account_confirm_demo",
+  "goal": null,
+  "step_id": null,
+  "url": "http://localhost:5001/member/12345/sub-account/confirm",
+  "accessibility_tree": "- table:\n  - rowgroup:\n    - 'row \"Confirm Sub-Account Details Member: Jordan Ellis (12345) Account Type: savings Initial Deposit: $25.00 This action cannot be undone. Confirm and Open Account\"':\n      - 'cell \"Confirm Sub-Account Details Member: Jordan Ellis (12345) Account Type: savings Initial Deposit: $25.00 This action cannot be undone. Confirm and Open Account\"':\n        - table:\n          - rowgroup:\n            - row \"Confirm Sub-Account Details\":\n              - cell \"Confirm Sub-Account Details\"\n            - 'row \"Member: Jordan Ellis (12345) Account Type: savings Initial Deposit: $25.00 This action cannot be undone. Confirm and Open Account\"':\n              - 'cell \"Member: Jordan Ellis (12345) Account Type: savings Initial Deposit: $25.00 This action cannot be undone. Confirm and Open Account\"':\n                - table:\n                  - rowgroup:\n                    - 'row \"Member: Jordan Ellis (12345)\"':\n                      - cell \"Member:\"\n                      - cell \"Jordan Ellis (12345)\"\n                    - 'row \"Account Type: savings\"':\n                      - cell \"Account Type:\"\n                      - cell \"savings\"\n                    - 'row \"Initial Deposit: $25.00\"':\n                      - cell \"Initial Deposit:\"\n                      - cell \"$25.00\"\n                - text: This action cannot be undone.\n                - button \"Confirm and Open Account\"",
+  "screenshot_path": "/Users/sarvani/Downloads/legacy-teller-automation/evidence/demo_approval_escalation/20261006_122024_429111.png",
+  "proposed_action": {
+    "action": "click",
+    "target": {
+      "strategies": [
+        {
+          "kind": "role_name",
+          "role": "button",
+          "name": "Confirm and Open Account"
+        }
+      ]
+    },
+    "value": null
+  },
+  "created_at": "2026-10-06T19:20:24.474714+00:00"
+}

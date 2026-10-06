@@ -59,3 +59,10 @@ class Surface(ABC):
         specifically to distinguish between two already-anticipated
         states (e.g. "did the balance row appear, or the not-found
         message?"), not to wait out a slow load."""
+
+    @abstractmethod
+    def current_url(self) -> str:
+        """Just the URL, with no accessibility-tree read and no
+        screenshot. Used wherever only the destination matters (risk
+        classification before deciding whether to escalate) and a full
+        observe() would be wasteful."""

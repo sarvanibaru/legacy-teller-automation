@@ -62,6 +62,9 @@ class FakeSurface(Surface):
 
         return ActResult(success=False, error=f"Unknown action: {action.type}")
 
+    def current_url(self) -> str:
+        return self.url
+
     def element_visible(self, target) -> bool:
         strategy = target.strategies[0]
         if strategy.kind == "row_label":

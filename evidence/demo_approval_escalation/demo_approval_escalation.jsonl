@@ -1,0 +1,8 @@
+{"timestamp": "2026-10-06T19:20:24.118029+00:00", "run_id": "demo_approval_escalation", "event_type": "replay_started", "capability_id": "member.open_sub_account_confirm_demo", "capability_version": 1}
+{"timestamp": "2026-10-06T19:20:24.118554+00:00", "run_id": "demo_approval_escalation", "event_type": "step_started", "step_id": "s1", "action": "click"}
+{"timestamp": "2026-10-06T19:20:24.219258+00:00", "run_id": "demo_approval_escalation", "event_type": "step_completed", "step_id": "s1", "success": true, "resolved_via": "RoleNameLocator", "error": null}
+{"timestamp": "2026-10-06T19:20:24.293764+00:00", "run_id": "demo_approval_escalation", "event_type": "step_started", "step_id": "s2", "action": "click"}
+{"timestamp": "2026-10-06T19:20:24.373028+00:00", "run_id": "demo_approval_escalation", "event_type": "step_completed", "step_id": "s2", "success": true, "resolved_via": "RoleNameLocator", "error": null}
+{"timestamp": "2026-10-06T19:20:24.423603+00:00", "run_id": "demo_approval_escalation", "event_type": "step_started", "step_id": "s3", "action": "click"}
+{"timestamp": "2026-10-06T19:20:30.773711+00:00", "run_id": "demo_approval_escalation", "event_type": "step_completed", "step_id": "s3", "success": true, "resolved_via": "RoleNameLocator", "error": null}
+{"timestamp": "2026-10-06T19:20:31.291044+00:00", "run_id": "demo_approval_escalation", "event_type": "replay_succeeded", "capability_id": "member.open_sub_account_confirm_demo", "outputs": {}}

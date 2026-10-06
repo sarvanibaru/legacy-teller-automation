@@ -7,54 +7,36 @@ from playwright.sync_api import Page, TimeoutError as PlaywrightTimeoutError
 
 from src.safety.policy import PolicyEngine, PolicyViolation
 from src.surfaces.base import Action, ActResult, Observation, Surface
-from src.surfaces.targeting import (
-    RoleNameLocator,
-    RowLabelLocator,
-    TargetDescriptor,
-    TextExactLocator,
-)
+from src.surfaces.targeting import RoleNameLocator, RowLabelLocator, TargetDescriptor, TextExactLocator
 
 
 class WebSurface(Surface):
-    def __init__(
-        self,
-        page: Page,
-        policy: PolicyEngine,
-        screenshot_dir: str | Path = "evidence/tmp",
-    ):
+    def __init__(self, page: Page, policy: PolicyEngine, screenshot_dir="evidence/tmp", session=None):
         self.page = page
         self.policy = policy
         self.screenshot_dir = Path(screenshot_dir)
         self.screenshot_dir.mkdir(parents=True, exist_ok=True)
-
-    # ---------- observation ----------
+        self.session = session
 
     def observe(self) -> Observation:
         tree = self._render_accessibility_tree()
         screenshot_path = self._take_screenshot()
-        return Observation(
-            url=self.page.url,
-            accessibility_tree=tree,
-            screenshot_path=screenshot_path,
-        )
+        return Observation(url=self.page.url, accessibility_tree=tree, screenshot_path=screenshot_path)
 
     def _render_accessibility_tree(self) -> str:
-        """Playwright's modern aria_snapshot() returns the accessibility
-        tree as a readable YAML-style string directly -- this is what gets
-        shown to the LLM, and it's dramatically shorter and more meaningful
-        than raw HTML for a legacy page."""
         return self.page.locator("body").aria_snapshot()
 
     def _take_screenshot(self) -> str:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-        path = self.screenshot_dir / f"{timestamp}.png"
+        path = (self.screenshot_dir / f"{timestamp}.png").resolve()
         self.page.screenshot(path=str(path))
         return str(path)
 
-    # ---------- action ----------
-
     def act(self, action: Action) -> ActResult:
         try:
+            if self.session is not None:
+                self.session.assert_agent_turn()
+
             if action.type == "navigate":
                 return self._do_navigate(action)
             elif action.type == "click":
@@ -96,27 +78,17 @@ class WebSurface(Surface):
         text = locator.inner_text()
         return ActResult(success=True, resolved_via=strategy_name, extracted_text=text)
 
+    def current_url(self) -> str:
+        return self.page.url
+
     def element_visible(self, target: TargetDescriptor, timeout_ms: int = 1000) -> bool:
-        """No policy check here -- this only asks a question, it doesn't
-        act. A short default timeout: this is typically used to
-        distinguish between two already-anticipated states (checkpoint
-        met vs. not, a declared outcome present vs. not), so waiting out
-        a long default timeout on the "not present" branch would make
-        every replay slow for no benefit."""
         try:
             self._resolve(target, timeout_ms=timeout_ms)
             return True
         except Exception:
             return False
 
-    # ---------- targeting ----------
-
     def _resolve(self, target: TargetDescriptor, timeout_ms: int = 3000):
-        """Tries each strategy in order, returns the first that resolves
-        to a visible element, along with which strategy it was. That
-        second piece is what makes drift observable later -- if replay
-        keeps needing strategy 2 instead of strategy 1, that's worth
-        knowing."""
         if target is None:
             raise ValueError("This action requires a target")
 
@@ -136,14 +108,7 @@ class WebSurface(Surface):
         if isinstance(strategy, RoleNameLocator):
             return self.page.get_by_role(strategy.role, name=strategy.name)
         elif isinstance(strategy, RowLabelLocator):
-            # Anchoring on "row" by name is fragile in nested-table legacy
-            # markup: a row's accessible name can absorb its ancestors'
-            # text too, so multiple rows can match the same substring.
-            # Anchoring on the specific rowheader, then walking to its
-            # parent row, then finding that row's cell, stays unambiguous.
-            rowheader = self.page.get_by_role(
-                "rowheader", name=strategy.row_label, exact=True
-            )
+            rowheader = self.page.get_by_role("rowheader", name=strategy.row_label, exact=True)
             row = rowheader.locator("xpath=..")
             return row.get_by_role("cell")
         elif isinstance(strategy, TextExactLocator):

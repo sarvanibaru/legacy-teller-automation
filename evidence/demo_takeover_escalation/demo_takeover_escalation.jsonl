@@ -1,0 +1,13 @@
+{"timestamp": "2026-10-06T19:20:43.541989+00:00", "run_id": "demo_takeover_escalation", "event_type": "replay_started", "capability_id": "member.read_savings_balance.agent_generated", "capability_version": 1}
+{"timestamp": "2026-10-06T19:20:43.542423+00:00", "run_id": "demo_takeover_escalation", "event_type": "step_started", "step_id": "s1", "action": "navigate"}
+{"timestamp": "2026-10-06T19:20:43.579155+00:00", "run_id": "demo_takeover_escalation", "event_type": "step_completed", "step_id": "s1", "success": true, "resolved_via": "navigate", "error": null}
+{"timestamp": "2026-10-06T19:20:43.642338+00:00", "run_id": "demo_takeover_escalation", "event_type": "step_started", "step_id": "s2", "action": "type"}
+{"timestamp": "2026-10-06T19:20:43.654896+00:00", "run_id": "demo_takeover_escalation", "event_type": "step_completed", "step_id": "s2", "success": true, "resolved_via": "RoleNameLocator", "error": null}
+{"timestamp": "2026-10-06T19:20:43.709355+00:00", "run_id": "demo_takeover_escalation", "event_type": "step_started", "step_id": "s3", "action": "click"}
+{"timestamp": "2026-10-06T19:20:43.787969+00:00", "run_id": "demo_takeover_escalation", "event_type": "step_completed", "step_id": "s3", "success": true, "resolved_via": "RoleNameLocator", "error": null}
+{"timestamp": "2026-10-06T19:20:43.838881+00:00", "run_id": "demo_takeover_escalation", "event_type": "step_started", "step_id": "s4", "action": "read_text"}
+{"timestamp": "2026-10-06T19:20:46.911422+00:00", "run_id": "demo_takeover_escalation", "event_type": "escalation_raised", "kind": "takeover", "request_id": "int_20261006_122046_910938", "step_id": "s4"}
+{"timestamp": "2026-10-06T19:20:54.679698+00:00", "run_id": "demo_takeover_escalation", "event_type": "escalation_resolved", "resolution": {"approved": true, "note": ""}, "step_id": "s4"}
+{"timestamp": "2026-10-06T19:20:54.702693+00:00", "run_id": "demo_takeover_escalation", "event_type": "step_retried_after_escalation", "step_id": "s4", "success": true}
+{"timestamp": "2026-10-06T19:20:54.702805+00:00", "run_id": "demo_takeover_escalation", "event_type": "step_completed", "step_id": "s4", "success": true, "resolved_via": "RowLabelLocator", "error": null}
+{"timestamp": "2026-10-06T19:20:54.810488+00:00", "run_id": "demo_takeover_escalation", "event_type": "replay_succeeded", "capability_id": "member.read_savings_balance.agent_generated", "outputs": {"savingsBalance": 4210.55}}
